@@ -10,7 +10,7 @@ pipeline {
 
         stage("Prepare"){
             steps{
-                git 'https://github.com/moh-amer/spring-petclinic'
+                git (url:'https://github.com/moh-amer/spring-petclinic',branch:'main')
             }
         }
 
