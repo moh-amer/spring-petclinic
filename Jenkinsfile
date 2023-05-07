@@ -27,6 +27,11 @@ pipeline {
                 }
             }
         }
+        stage("Deploy"){
+            steps{
+                sh "java -Dserver.port=5001 -jar spring-petclinic-2.3.1.BUILD-SNAPSHOT.jar"
+            }
+        }
     }
 }
 
