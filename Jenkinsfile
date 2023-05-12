@@ -42,10 +42,12 @@ pipeline {
         }
     }
 
+}
+
+
         post{
                 success{
                         slackSend color: "#439FE0", message: "Deployed Successfully To DockerHub: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
                 }
         }
-}
 }
