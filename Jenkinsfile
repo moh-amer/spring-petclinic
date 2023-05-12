@@ -14,24 +14,38 @@ pipeline {
             }
         }
 
-        stage("Build"){
+        stage("Compiling and Packaging"){
             steps{
                 sh "./mvnw compile"
                 sh "./mvnw clean package"
             }
 
-            post {
-                success {
+        }
+        stage("Testing"){
+            steps{
                     junit 'target/surefire-reports/*.xml'
                     archiveArtifacts 'target/*.jar'
-                }
             }
         }
-        stage("Deploy"){
+
+        stage("Building"){
             steps{
-                sh "java -Dserver.port=5001 -jar target/spring-petclinic-2.3.1.BUILD-SNAPSHOT.jar &"
+                 withCredentials([usernamePassword(credentialsId: 'dockerId', passwordVariable: 'DOCKER_PASS',
+                  usernameVariable: 'DOCKER_USER')]) {
+
+                sh """
+                    docker build -t 'pharogrammer/petclinic:v1.${BUILD_NUMBER}' .
+                    docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+                    docker push pharogrammer/petclinic:v1.${BUILD_NUMBER}
+                """
             }
         }
     }
+
+        post{
+                success{
+                        slackSend color: "#439FE0", message: "Deployed Successfully To DockerHub: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+                }
+        }
 }
 
