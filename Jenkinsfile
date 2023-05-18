@@ -46,7 +46,7 @@ pipeline {
 stage("Clone Git Repository") {
             steps {
                 git(
-                    url: "git@github.com:moh-amer/petclinic-config.git",
+                    url: "https://github.com/moh-amer/petclinic-config",
                     branch: "main",
                     changelog: true,
                     poll: true
