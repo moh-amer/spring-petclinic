@@ -28,19 +28,19 @@ pipeline {
             }
         }
 
-        stage("Building"){
-            steps{
-                 withCredentials([usernamePassword(credentialsId: 'dockerId', passwordVariable: 'DOCKER_PASS',
-                  usernameVariable: 'DOCKER_USER')]) {
+    //     stage("Building"){
+    //         steps{
+    //              withCredentials([usernamePassword(credentialsId: 'dockerId', passwordVariable: 'DOCKER_PASS',
+    //               usernameVariable: 'DOCKER_USER')]) {
 
-                sh """
-                    docker build -t 'pharogrammer/petclinic:v1.${BUILD_NUMBER}' .
-                    docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
-                    docker push pharogrammer/petclinic:v1.${BUILD_NUMBER}
-                """
-            }
-        }
-    }
+    //             sh """
+    //                 docker build -t 'pharogrammer/petclinic:v1.${BUILD_NUMBER}' .
+    //                 docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+    //                 docker push pharogrammer/petclinic:v1.${BUILD_NUMBER}
+    //             """
+    //         }
+    //     }
+    // }
 
     /////////////////start ////////////
 stage("Clone Git Repository") {
@@ -55,6 +55,9 @@ stage("Clone Git Repository") {
         }
         stage("Create artifacts or make changes") {
             steps {
+                sh "git config --global user.email 'medodeth666@gmail.com' "
+                sh "git config --global user.name 'moh-amer' "
+
                 sh "touch testfile"
                 sh "git add testfile"
                 sh "git commit -m 'Add testfile from Jenkins Pipeline'"
